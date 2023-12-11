@@ -1,6 +1,7 @@
 package edu.chalmers_gu_cse.oopd.exercises.polygonModel;
 
 import edu.chalmers_gu_cse.oopd.exercises.polygonModel.polygon.Polygon;
+import edu.chalmers_gu_cse.oopd.exercises.polygonModel.polygon.PolygonTimer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,10 +23,11 @@ public class PolygonModel implements ModelUpdateListener, Iterable<Polygon> {
 
     private final PolygonSet polygonSet;
     private final PolygonSetAnimator animator;
+    private PolygonTimer timer;
 
     public PolygonModel() {
         polygonSet = new PolygonSet();
-        animator = new PolygonSetAnimator(polygonSet);
+        animator = new PolygonSetAnimator(polygonSet, new PolygonTimer(20));
         animator.addListener(this);
     }//constructor
 
@@ -60,6 +62,10 @@ public class PolygonModel implements ModelUpdateListener, Iterable<Polygon> {
     public void actOnPolygonAdded(Polygon p) {
         for (ModelUpdateListener l : listeners)
             l.actOnPolygonAdded(p);
+    }
+
+    public List<Polygon> getPolygonsToTransform() {
+        return polygonSet.getPolygons();
     }
 
 }

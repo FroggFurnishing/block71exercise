@@ -1,17 +1,22 @@
 package edu.chalmers_gu_cse.oopd.exercises.polygonModel;
 
-import edu.chalmers_gu_cse.oopd.exercises.polygonModel.macro.Transform;
+import edu.chalmers_gu_cse.oopd.exercises.polygonModel.polygon.PolygonTimer;
+import edu.chalmers_gu_cse.oopd.exercises.polygonModel.polygon.internal.TimerObserver;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/* package-private */ class PolygonSetAnimator {
+/* package-private */ class PolygonSetAnimator implements TimerObserver {
     private final PolygonSet polygonSet;
     private int ticker = 0;
     private boolean moveForwards = true;
 
-    public PolygonSetAnimator(PolygonSet polygonSet) {
+    private PolygonTimer timer;
+
+    public PolygonSetAnimator(PolygonSet polygonSet, PolygonTimer timer) {
         this.polygonSet = polygonSet;
+        this.timer = timer;
+        timer.addObserver(this);
     }
 
     // TODO: Step 2f: Update this method to use a Macro, instead of the current
@@ -31,15 +36,7 @@ import java.util.List;
     //  and let this animator be an observer so that update is called on
     //  each tick.
     public void animate(){
-        boolean running = true;
-        while (running) {
-            try {
-                Thread.sleep(500);
-                update();
-            } catch (InterruptedException e) {
-                running = false;
-            }
-        }
+        timer.run();
     }
 
     private final List<ModelUpdateListener> listeners = new ArrayList<>();
@@ -51,5 +48,8 @@ import java.util.List;
             l.actOnModelUpdate();
     }
 
-
+    @Override
+    public void changeOnTimerUpdate() {
+        update();
+    }
 }

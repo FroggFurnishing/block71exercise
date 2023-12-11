@@ -34,4 +34,7 @@ import java.util.stream.Stream;
         return polygons.iterator();
     }
 
+    public List<Polygon> getPolygons() {
+        return polygons;
+    }
 }
